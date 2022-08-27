@@ -13,20 +13,20 @@ public class StarWars extends AbstractGame {
     private static int MESSAGE1_COORD = 402;
     private final static int MESSAGE2_COORD = 472;
     private final static int MESSAGE3_COORD = 542;
-    
+
     private final DrawOptions scale = new DrawOptions();
     private final DrawOptions color = new DrawOptions();
 
     private final Font starwars_font;
     private final String FONT_STYLE = "resource/starwars.otf";
-    private final Image PLAYER = new Image("resource/falcon.png");
+    Player player = new Player(Window.getHeight()/2+200,Window.getWidth()/2);
     private final static int FONT_SIZE = 40;
-    
+
     private final String START_MESSAGE = "PRESS SPACE TO START";
     private final String TITLE_MESSAGE = "STARWARS X FIGHT: HORIZON ODYSSEY";
-    
+
     private boolean game_end = false;
-    
+
     private boolean pressed_enter = false;
 
     public StarWars() {
@@ -47,10 +47,10 @@ public class StarWars extends AbstractGame {
             pressed_enter = true;
         } else {
             starwars_font.drawString(TITLE_MESSAGE, (WINDOW_WIDTH - starwars_font.getWidth
-                (TITLE_MESSAGE))/2, MESSAGE1_COORD, color.setBlendColour(1,1,0));
+                    (TITLE_MESSAGE))/2, MESSAGE1_COORD, color.setBlendColour(1,1,0));
             starwars_font.drawString(START_MESSAGE, (WINDOW_WIDTH - starwars_font.getWidth
-                (START_MESSAGE))/2, MESSAGE2_COORD, color.setBlendColour(1,1,0));
-        } 
+                    (START_MESSAGE))/2, MESSAGE2_COORD, color.setBlendColour(1,1,0));
+        }
     }
 
     @Override
@@ -60,7 +60,8 @@ public class StarWars extends AbstractGame {
             drawMessage(input);
         }
         else {
-            PLAYER.draw(Window.getWidth()/2, Window.getHeight()/2 + 200, scale.setScale(0.5, 0.5));
+            player.getShip().draw(player.getX_coordinate(),player.getY_coordinate(), scale.setScale(0.5, 0.5));
+            player.move(input);
         }
     }
 }
