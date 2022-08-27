@@ -29,6 +29,8 @@ public class StarWars extends AbstractGame {
     
     private boolean pressed_enter = false;
 
+    TieFighter tiefighter = new TieFighter();
+
     public StarWars() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
         starwars_font = new Font(FONT_STYLE, FONT_SIZE);
@@ -52,7 +54,7 @@ public class StarWars extends AbstractGame {
                 (START_MESSAGE))/2, MESSAGE2_COORD, color.setBlendColour(1,1,0));
         } 
     }
-
+    private int frames = 0;
     @Override
     public void update(Input input) {
         BACKGROUND.draw(Window.getWidth()/2.0, Window.getHeight()/2.0, scale.setScale(1.5, 2));
@@ -61,6 +63,23 @@ public class StarWars extends AbstractGame {
         }
         else {
             PLAYER.draw(Window.getWidth()/2, Window.getHeight()/2 + 200, scale.setScale(0.5, 0.5));
+            tiefighter.drawSprite();
+            if (frames <= 100) {
+                tiefighter.moveDown();
+            }
+            else if (frames <= 300 && frames > 100){
+                tiefighter.moveLeft();
+            }
+            else if (frames <= 400 && frames > 300){
+                tiefighter.moveDown();
+            }
+            else if (frames <= 600 && frames > 400) {
+                tiefighter.moveRight();
+            }
+            else {
+                frames = 0;
+            }
+            frames++;
         }
     }
 }
