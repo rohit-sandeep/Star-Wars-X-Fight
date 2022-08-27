@@ -17,6 +17,7 @@ public class StarWars extends AbstractGame {
     private final DrawOptions scale = new DrawOptions();
     private final DrawOptions color = new DrawOptions();
 
+    
     private final Font starwars_font;
     private final String FONT_STYLE = "resource/starwars.otf";
     private final Image PLAYER = new Image("resource/falcon.png");
@@ -28,8 +29,8 @@ public class StarWars extends AbstractGame {
     private boolean game_end = false;
     
     private boolean pressed_enter = false;
-
-    TieFighter tiefighter = new TieFighter();
+    
+    private ArrayList<TieFighter> ties = new ArrayList<>();
 
     public StarWars() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -44,6 +45,13 @@ public class StarWars extends AbstractGame {
         game.run();
     }
 
+    public void addEnemies() {
+        ties.add(new TieFighter(768/4, 0));
+        ties.add(new TieFighter(768/4, 0));
+        ties.add(new TieFighter(768/4, 0));
+        ties.add(new TieFighter(768/4, 0));
+    }
+    
     public void drawMessage(Input input) {
         if (input.wasPressed(Keys.SPACE)) {
             pressed_enter = true;
@@ -54,30 +62,41 @@ public class StarWars extends AbstractGame {
                 (START_MESSAGE))/2, MESSAGE2_COORD, color.setBlendColour(1,1,0));
         } 
     }
+
     private int frames = 0;
     @Override
     public void update(Input input) {
         BACKGROUND.draw(Window.getWidth()/2.0, Window.getHeight()/2.0, scale.setScale(1.5, 2));
         if (!pressed_enter) {
             drawMessage(input);
+            addEnemies();
         }
         else {
             PLAYER.draw(Window.getWidth()/2, Window.getHeight()/2 + 200, scale.setScale(0.5, 0.5));
-            tiefighter.drawSprite();
-            if (frames <= 100) {
-                tiefighter.moveDown();
+            if (frames > 50) {
+                ties.get(0).drawSprite();
+                ties.get(0).movement();
             }
-            else if (frames <= 300 && frames > 100){
-                tiefighter.moveLeft();
+            if (frames > 100) {
+                ties.get(1).drawSprite();
+                ties.get(1).movement();
             }
-            else if (frames <= 400 && frames > 300){
-                tiefighter.moveDown();
+            if (frames > 150) {
+                ties.get(2).drawSprite();
+                ties.get(2).movement();
             }
-            else if (frames <= 600 && frames > 400) {
-                tiefighter.moveRight();
+            if (frames > 200) {
+                ties.get(3).drawSprite();
+                ties.get(3).movement();
             }
-            else {
-                frames = 0;
+            for (TieFighter fighters : ties) {
+                if (fighters.getY() == WINDOW_HEIGHT) {
+                    fighters.setX(768/4);
+                    fighters.setY(0);
+                    fighters.setF(false);
+                    fighters.setG(false);
+                    fighters.setTurn(true);
+                }
             }
             frames++;
         }
